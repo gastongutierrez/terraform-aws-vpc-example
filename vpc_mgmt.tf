@@ -69,28 +69,21 @@ resource "aws_security_group" "mgmt-jumpserver-sg" {
     }
 }
 
+data "template_file" "init" {
+  template = "${file("init.sh.tpl")}"
+
+  vars = {
+    private_key = "${tls_private_key.ssh.private_key_pem}"
+  }
+}
+
 resource "aws_instance" "mgmt-jumpserver-instance" {
     ami = data.aws_ami.ubuntu.id
     instance_type = var.mgmt_jumpserver_instance_type
     subnet_id = aws_subnet.mgmt-public-subnet.id
     security_groups = [aws_security_group.mgmt-jumpserver-sg.id]
     key_name = aws_key_pair.ssh.key_name
-    
-    connection {
-        host = coalesce(self.public_ip, self.private_ip)
-        type = "ssh"
-        user = "ubuntu"
-        private_key = tls_private_key.ssh.private_key_pem
-    }
-
-    provisioner "remote-exec" {
-        inline = [
-            "sudo touch /home/ubuntu/.ssh/id_rsa",
-            "sudo chown ubuntu:ubuntu /home/ubuntu/.ssh/id_rsa",
-            "sudo chmod 600 /home/ubuntu/.ssh/id_rsa",
-            "sudo echo \"${tls_private_key.ssh.private_key_pem}\" > /home/ubuntu/.ssh/id_rsa",
-        ]
-    }
+    user_data = "${data.template_file.init.rendered}"
 
     tags = {
         Name = "mgmt-jumpserver-instance"
