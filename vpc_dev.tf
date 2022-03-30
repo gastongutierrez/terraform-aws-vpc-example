@@ -145,12 +145,21 @@ resource "aws_security_group" "dev-public-sg" {
     }
 }
 
+data "template_file" "init-dev" {
+  template = "${file("init-dev.sh.tpl")}"
+
+  vars = {
+    availability_zone = "${var.aws_az}"
+  }
+}
+
 resource "aws_instance" "dev-public-instance" {
     ami = data.aws_ami.ubuntu.id
     instance_type = var.dev_public_instance_type
     subnet_id = aws_subnet.dev-public-subnet.id
     security_groups = [aws_security_group.dev-public-sg.id]
     key_name = aws_key_pair.ssh.key_name
+    user_data = "${data.template_file.init-dev.rendered}"
 
     tags = {
         Name = "dev-public-instance"
