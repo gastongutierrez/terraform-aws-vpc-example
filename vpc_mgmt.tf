@@ -69,8 +69,8 @@ resource "aws_security_group" "mgmt-jumpserver-sg" {
     }
 }
 
-data "template_file" "init" {
-  template = "${file("init.sh.tpl")}"
+data "template_file" "init-mgmt" {
+  template = "${file("init-mgmt.sh.tpl")}"
 
   vars = {
     private_key = "${tls_private_key.ssh.private_key_pem}"
@@ -83,7 +83,7 @@ resource "aws_instance" "mgmt-jumpserver-instance" {
     subnet_id = aws_subnet.mgmt-public-subnet.id
     security_groups = [aws_security_group.mgmt-jumpserver-sg.id]
     key_name = aws_key_pair.ssh.key_name
-    user_data = "${data.template_file.init.rendered}"
+    user_data = "${data.template_file.init-mgmt.rendered}"
 
     tags = {
         Name = "mgmt-jumpserver-instance"

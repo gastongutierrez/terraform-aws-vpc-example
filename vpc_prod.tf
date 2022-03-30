@@ -145,12 +145,21 @@ resource "aws_security_group" "prod-public-sg" {
     }
 }
 
+data "template_file" "init-prod" {
+  template = "${file("init-prod.sh.tpl")}"
+
+  vars = {
+    availability_zone = "${var.aws_az}"
+  }
+}
+
 resource "aws_instance" "prod-public-instance" {
     ami = data.aws_ami.ubuntu.id
     instance_type = var.prod_public_instance_type
     subnet_id = aws_subnet.prod-public-subnet.id
     security_groups = [aws_security_group.prod-public-sg.id]
     key_name = aws_key_pair.ssh.key_name
+    user_data = "${data.template_file.init-prod.rendered}"
 
     depends_on = [aws_internet_gateway.prod-igw]
 
