@@ -18,7 +18,7 @@ resource "aws_subnet" "dev-public-subnet" {
     vpc_id = aws_vpc.dev-vpc.id
     cidr_block = var.dev_public_subnet_cidr
     map_public_ip_on_launch = true
-    availability_zone = var.aws_az
+    availability_zone = var.aws_az_dev
 
     tags = {
         Name = "dev-public-subnet"
@@ -46,7 +46,7 @@ resource "aws_route_table_association" "dev-public-rt-association" {
 resource "aws_subnet" "dev-private-subnet" {
     vpc_id = aws_vpc.dev-vpc.id
     cidr_block = var.dev_private_subnet_cidr
-    availability_zone = var.aws_az
+    availability_zone = var.aws_az_dev
 
     tags = {
         Name = "dev-private-subnet"
@@ -149,7 +149,7 @@ data "template_file" "init-dev" {
   template = "${file("init-dev.sh.tpl")}"
 
   vars = {
-    availability_zone = "${var.aws_az}"
+    availability_zone = "${var.aws_az_dev}"
   }
 }
 

@@ -8,12 +8,28 @@ output "ssh_public_key_pem" {
     sensitive = true
 }
 
-output "prod_public_instance_private_ip" {
-    value = aws_instance.prod-public-instance.private_ip
+output "prod_frontend_instance_private_ip_1" {
+    value = aws_instance.prod-frontend-instance[0].private_ip
 }
 
-output "prod_private_instance_private_ip" {
-    value = aws_instance.prod-private-instance.private_ip
+output "prod_frontend_instance_private_ip_2" {
+    value = aws_instance.prod-frontend-instance[1].private_ip
+}
+
+output "prod_frontend_instance_private_ip_3" {
+    value = aws_instance.prod-frontend-instance[2].private_ip
+}
+
+output "prod_backend_instance_private_ip_1" {
+    value = aws_instance.prod-backend-instance[0].private_ip
+}
+
+output "prod_backend_instance_private_ip_2" {
+    value = aws_instance.prod-backend-instance[1].private_ip
+}
+
+output "prod_backend_instance_private_ip_3" {
+    value = aws_instance.prod-backend-instance[2].private_ip
 }
 
 output "dev_public_instance_private_ip" {

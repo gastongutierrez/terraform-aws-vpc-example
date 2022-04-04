@@ -3,8 +3,34 @@ variable "aws_region" {
     default = "us-east-1"
 }
 
-variable "aws_az" {
-    description = "AZ for the subnets"
+variable "aws_az_prod" {
+    description = "List of prod AZs"
+    type = list(string)
+    default = ["us-east-1a", "us-east-1b", "us-east-1c"]
+}
+
+variable "aws_az_1" {
+    description = "AZ 1"
+    default = "us-east-1a"
+}
+
+variable "aws_az_2" {
+    description = "AZ 2"
+    default = "us-east-1b"
+}
+
+variable "aws_az_3" {
+    description = "AZ 3"
+    default = "us-east-1c"
+}
+
+variable "aws_az_dev" {
+    description = "AZ Dev"
+    default = "us-east-1a"
+}
+
+variable "aws_az_mgmt" {
+    description = "AZ mgmt"
     default = "us-east-1a"
 }
 
@@ -19,13 +45,21 @@ variable "prod_vpc_cidr" {
 }
 
 variable "prod_public_subnet_cidr" {
-    description = "CIDR for the production Public Subnet"
-    default = "10.100.1.0/24"
+    description = "CIDR list for the production Public Subnets"
+    type = list(string)
+    default = ["10.100.10.0/24", "10.100.11.0/24", "10.100.12.0/24"]
 }
 
-variable "prod_private_subnet_cidr" {
-    description = "CIDR for the production Private Subnet"
-    default = "10.100.2.0/24"
+variable "prod_frontend_subnet_cidr" {
+    description = "CIDR list for the production Frontend Subnets"
+    type = list(string)
+    default = ["10.100.1.0/24", "10.100.2.0/24", "10.100.3.0/24"]
+}
+
+variable "prod_backend_subnet_cidr" {
+    description = "CIDR list for the production Backend Subnets"
+    type = list(string)
+    default = ["10.100.20.0/24", "10.100.21.0/24", "10.100.22.0/24"]
 }
 
 variable "dev_vpc_cidr" {
@@ -53,13 +87,13 @@ variable "mgmt_public_subnet_cidr" {
     default = "10.10.1.0/24"
 }
 
-variable "prod_public_instance_type" {
-    description = "EC2 instance type for production public subnet"
+variable "prod_frontend_instance_type" {
+    description = "EC2 instance type for production frontend subnet"
     default = "t2.micro"
 }
 
-variable "prod_private_instance_type" {
-    description = "EC2 instance type for production private subnet"
+variable "prod_backend_instance_type" {
+    description = "EC2 instance type for production backend subnet"
     default = "t2.micro"
 }
 

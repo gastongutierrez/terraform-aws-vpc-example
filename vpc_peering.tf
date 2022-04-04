@@ -19,8 +19,20 @@ resource "aws_route" "prod-public-to-mgmt-route" {
   vpc_peering_connection_id = aws_vpc_peering_connection.mgmt-to-prod.id
 }
 
-resource "aws_route" "prod-private-to-mgmt-route" {
-  route_table_id            = aws_route_table.prod-private-rt.id
+resource "aws_route" "prod-private-1-to-mgmt-route" {
+  route_table_id            = aws_route_table.prod-private-rt[0].id
+  destination_cidr_block    = aws_vpc.mgmt-vpc.cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.mgmt-to-prod.id
+}
+
+resource "aws_route" "prod-private-2-to-mgmt-route" {
+  route_table_id            = aws_route_table.prod-private-rt[1].id
+  destination_cidr_block    = aws_vpc.mgmt-vpc.cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.mgmt-to-prod.id
+}
+
+resource "aws_route" "prod-private-3-to-mgmt-route" {
+  route_table_id            = aws_route_table.prod-private-rt[2].id
   destination_cidr_block    = aws_vpc.mgmt-vpc.cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.mgmt-to-prod.id
 }

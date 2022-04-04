@@ -18,7 +18,7 @@ resource "aws_subnet" "mgmt-public-subnet" {
     vpc_id = aws_vpc.mgmt-vpc.id
     cidr_block = var.mgmt_public_subnet_cidr
     map_public_ip_on_launch = true
-    availability_zone = var.aws_az
+    availability_zone = var.aws_az_mgmt
 
     tags = {
          Name = "mgmt-public-subnet"
